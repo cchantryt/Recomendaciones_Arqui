@@ -2,3 +2,6 @@ Flask==2.1.1
 psycopg2-binary==2.9.3
 pandas==1.4.2
 scikit-surprise==1.1.1
+numpy==1.21.2
+setuptools==58.0.4
+wheel==0.37.0
