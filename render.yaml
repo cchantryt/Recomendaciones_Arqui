@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: recomendaciones-arqui
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn -w 3 recommendation_service:app
+    envVars:
+      - key: DATABASE_URL
+        value: postgres://default:gRrNo7CzZcw4@ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech:5432/verceldb
