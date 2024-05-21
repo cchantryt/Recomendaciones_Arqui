@@ -11,3 +11,4 @@ services:
     envVars:
       - key: DATABASE_URL
         value: postgres://default:gRrNo7CzZcw4@ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech:5432/verceldb
+
