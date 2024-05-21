@@ -11,4 +11,13 @@ services:
     envVars:
       - key: DATABASE_URL
         value: postgres://default:gRrNo7CzZcw4@ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech:5432/verceldb
-
+      - key: DB_NAME
+        value: verceldb
+      - key: DB_USER
+        value: default
+      - key: DB_PASSWORD
+        value: gRrNo7CzZcw4
+      - key: DB_HOST
+        value: ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech
+      - key: DB_PORT
+        value: 5432
