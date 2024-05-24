@@ -1,23 +1,23 @@
 services:
   - type: web
+    runtime: python
     name: recomendaciones-arqui
-    env: python
     plan: free
     buildCommand: |
       apt-get update && apt-get install -y build-essential
       pip install --upgrade pip
       pip install -r requirements.txt
-    startCommand: gunicorn -w 3 recommendation_service:app
+    startCommand: gunicorn -w 3 run:app
     envVars:
-      - key: DATABASE_URL
-        value: postgres://default:gRrNo7CzZcw4@ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech:5432/verceldb
-      - key: DB_NAME
-        value: verceldb
-      - key: DB_USER
+      - key: POSTGRES_USER
         value: default
-      - key: DB_PASSWORD
-        value: gRrNo7CzZcw4
-      - key: DB_HOST
+      - key: POSTGRES_HOST
         value: ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech
-      - key: DB_PORT
+      - key: POSTGRES_PASSWORD
+        value: gRrNo7CzZcw4
+      - key: POSTGRES_DATABASE
+        value: verceldb
+      - key: POSTGRES_PORT
         value: 5432
+      - key: POSTGRES_SSLMODE
+        value: require
