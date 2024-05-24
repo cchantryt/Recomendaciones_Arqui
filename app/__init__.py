@@ -1,14 +1,13 @@
 from flask import Flask
-from app.database import init_db
 from dotenv import load_dotenv
 import os
 
 def create_app():
+    load_dotenv()  # Carga las variables de entorno desde el archivo .env
     app = Flask(__name__)
     app.config.from_object('app.config.Config')
 
-    load_dotenv()  # Cargar variables de entorno desde .env si existe
-
+    from app.database import init_db
     init_db(app)
 
     from app.routes import main as main_blueprint
