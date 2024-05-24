@@ -6,4 +6,4 @@ numpy
 setuptools==58.0.4
 wheel==0.37.0
 gunicorn==20.1.0
-
+Werkzeug==2.0.3
