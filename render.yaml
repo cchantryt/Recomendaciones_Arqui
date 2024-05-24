@@ -1,13 +1,13 @@
 services:
   - type: web
+    runtime: python
     name: recomendaciones-arqui
-    env: python
     plan: free
     buildCommand: |
       apt-get update && apt-get install -y build-essential
       pip install --upgrade pip
       pip install -r requirements.txt
-    startCommand: gunicorn -w 3 recommendation_service:app
+    startCommand: gunicorn -w 3 run:app
     envVars:
       - key: DATABASE_URL
         value: postgres://default:gRrNo7CzZcw4@ep-twilight-thunder-a44l3m22-pooler.us-east-1.aws.neon.tech:5432/verceldb
