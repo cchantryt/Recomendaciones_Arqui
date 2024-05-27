@@ -58,27 +58,6 @@ def generate_recommendations(data):
     conn.close()
     return recommendations
  
-# Definimos una ruta '/users' que acepta solicitudes GET
-@app.route('/users', methods=['GET'])
-def get_users():
-    # Nos conectamos a la base de datos
-    conn = psycopg2.connect(
-        dbname=os.getenv('DB_NAME'),
-        user=os.getenv('DB_USER'),
-        password=os.getenv('DB_PASSWORD'),
-        host=os.getenv('DB_HOST'),
-        port=os.getenv('DB_PORT'),
-        sslmode='require'
-    )
- 
-    # Consultamos la base de datos para obtener todos los usuarios
-    query = "SELECT * FROM Users"
-    users = pd.read_sql_query(query, conn)
- 
-    # Cerramos la conexión a la base de datos y devolvemos los usuarios como una respuesta JSON
-    conn.close()
-    return users.to_json(orient='records')
-
 # Si el script se ejecuta directamente (no importado), iniciamos la aplicación Flask
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)

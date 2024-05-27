@@ -3,40 +3,44 @@ import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from app.database import get_db_connection
 
-def generate_recommendations(data):
+def generate_recommendations(webid):
     conn = get_db_connection()
-
-    # Consultamos la base de datos para obtener las compras de los usuarios
-    query = "SELECT user_id, product_id FROM purchases"
-    purchases = pd.read_sql_query(query, conn)
-
-    # Creamos una matriz de usuario-producto
-    user_product_matrix = purchases.pivot_table(index='user_id', columns='product_id', aggfunc='size', fill_value=0)
-
-    # Calculamos la similitud del coseno entre productos
-    product_similarity = cosine_similarity(user_product_matrix.T)
-
-    # Convertimos la matriz de similitud en un DataFrame
-    product_similarity_df = pd.DataFrame(product_similarity, index=user_product_matrix.columns, columns=user_product_matrix.columns)
-
-    # Obtenemos el ID del usuario del que queremos hacer la recomendación
-    user_id = data['user_id']
     
-    # Obtenemos los productos que el usuario ha comprado
-    user_products = user_product_matrix.loc[user_id]
-    user_products = user_products[user_products > 0].index.tolist()
+    # Obtener el UserId a partir del Webid
+    query_user = 'SELECT "UserId" FROM "Users" WHERE "Webid" = %s'
+    user_id_df = pd.read_sql_query(query_user, conn, params=[webid])
+    
+    if user_id_df.empty:
+        return {"error": "Invalid webid"}
+    
+    user_id = int(user_id_df.iloc[0]['UserId'])
 
-    # Calculamos las recomendaciones
-    recommendations = []
-    for product in user_products:
-        similar_products = product_similarity_df[product].sort_values(ascending=False).index.tolist()
-        recommendations.extend(similar_products)
+    # Obtener las órdenes del usuario
+    query_orders = 'SELECT "OrderId" FROM "Orders" WHERE "UserId" = %s'
+    orders_df = pd.read_sql_query(query_orders, conn, params=[user_id])
+    
+    if orders_df.empty:
+        return {"recommendations": []}
+    
+    order_ids = tuple(map(int, orders_df['OrderId']))
 
-    # Filtramos las recomendaciones para eliminar los productos que el usuario ya ha comprado
-    recommendations = [product for product in recommendations if product not in user_products]
+    # Obtener los detalles de las órdenes
+    query_order_details = 'SELECT "ProductId" FROM "OrderDetails" WHERE "OrderId" IN %s'
+    order_details_df = pd.read_sql_query(query_order_details, conn, params=[order_ids])
 
-    # Nos quedamos con las 3 recomendaciones más similares
-    recommendations = recommendations[:3]
+    if order_details_df.empty:
+        return {"recommendations": []}
+    
+    # Obtener la lista de productos comprados
+    purchased_product_ids = order_details_df['ProductId'].unique()
+    purchased_product_ids = tuple(map(int, purchased_product_ids))
 
+    # Obtener productos similares (aquí debes definir tu lógica de similitud)
+    query_products = 'SELECT "ProductId" FROM "Products" WHERE "ProductId" NOT IN %s ORDER BY RANDOM() LIMIT 3'
+    recommended_products_df = pd.read_sql_query(query_products, conn, params=[purchased_product_ids])
+
+    # Cerramos la conexión a la base de datos y devolvemos las recomendaciones
     conn.close()
-    return {"recommendations": recommendations}
+    
+    recommendations = {"recommendations": recommended_products_df['ProductId'].tolist()}
+    return recommendations
