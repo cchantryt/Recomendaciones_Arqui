@@ -1,6 +1,6 @@
 # Recomendaciones Arqui
 
-Este repositorio contiene el código fuente de una aplicación de recomendaciones construida con Flask, que utiliza un algoritmo de filtrado colaborativo para generar recomendaciones de productos basadas en el historial de compras de los usuarios.
+Este repositorio contiene el código fuente de la aplicación de recomendaciones construida con Flask, que utiliza un algoritmo de filtrado colaborativo para generar recomendaciones de productos basadas en el historial de compras de los usuarios.
 
 ## Características
 
@@ -9,7 +9,6 @@ Este repositorio contiene el código fuente de una aplicación de recomendacione
 - **Base de datos PostgreSQL**: Almacena información de usuarios, órdenes y detalles de órdenes en una base de datos PostgreSQL.
 
 ## Configuración
-
 La aplicación se configura a través de variables de entorno, las cuales se pueden especificar en un archivo `.env`. Un ejemplo de las variables necesarias se muestra a continuación:
 
 env
@@ -19,7 +18,9 @@ POSTGRES_PASSWORD=gRrNo7CzZcw4
 POSTGRES_DATABASE=verceldb
 POSTGRES_PORT=5432
 POSTGRES_SSLMODE=require
-Despliegue
+
+
+## Despliegue
 El archivo render.yaml contiene la configuración necesaria para desplegar la aplicación en Render, incluyendo la especificación del entorno de ejecución, comandos de construcción y variables de entorno.
 
 services:
@@ -45,7 +46,7 @@ services:
         value: ...
       - key: DB_PORT
         value: 5432
-Uso
+## Uso
 Para obtener recomendaciones, se debe enviar una solicitud POST a la ruta /recommend de la API, incluyendo el webid del usuario en el cuerpo de la solicitud.
 
 import requests
@@ -53,10 +54,10 @@ import requests
 data = {'webid': 'user_webid'}
 response = requests.post('http://<your-app-url>/recommend', json=data)
 recommendations = response.json()
-Desarrollo
+
+## Desarrollo
 Para iniciar el desarrollo local, asegúrese de tener instaladas todas las dependencias especificadas en requirements.txt.
 
 pip install -r requirements.txt
 Luego, puede iniciar la aplicación Flask ejecutando:
-
 python run.py
