@@ -47,7 +47,7 @@ services:
       - key: DB_PORT
         value: 5432
 ```
-Uso
+## Uso
 Para obtener recomendaciones, se debe enviar una solicitud POST a la ruta /recommend de la API, incluyendo el webid del usuario en el cuerpo de la solicitud.
 ```
 import requests
