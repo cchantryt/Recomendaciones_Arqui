@@ -46,19 +46,22 @@ services:
         value: ...
       - key: DB_PORT
         value: 5432
-'''
-## Uso
+```
+Uso
 Para obtener recomendaciones, se debe enviar una solicitud POST a la ruta /recommend de la API, incluyendo el webid del usuario en el cuerpo de la solicitud.
-
+```
 import requests
 
 data = {'webid': 'user_webid'}
 response = requests.post('http://<your-app-url>/recommend', json=data)
 recommendations = response.json()
-
+```
 ## Desarrollo
 Para iniciar el desarrollo local, asegúrese de tener instaladas todas las dependencias especificadas en requirements.txt.
-
+```
 pip install -r requirements.txt
+```
 Luego, puede iniciar la aplicación Flask ejecutando:
+```
 python run.py
+```
