@@ -22,7 +22,7 @@ POSTGRES_SSLMODE=require
 
 ## Despliegue
 El archivo render.yaml contiene la configuración necesaria para desplegar la aplicación en Render, incluyendo la especificación del entorno de ejecución, comandos de construcción y variables de entorno.
-
+```yaml
 services:
   - type: web
     runtime: python
